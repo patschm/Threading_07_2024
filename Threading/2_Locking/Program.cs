@@ -14,11 +14,11 @@ namespace M2_Locking
         static void Main(string[] args)
         {
             if (args.Length > 0 && args[0] == nameof(running)) running = true;
-            //ExclusiveLocking_1();
+            ExclusiveLocking_1();
             //ExclusiveLocking_2();
             //ExclusiveLocking_3();
             //ExclusiveLocking_4();
-            ExclusiveLocking_5();
+            //ExclusiveLocking_5();
             Console.ReadLine();
         }
 
@@ -28,6 +28,7 @@ namespace M2_Locking
         {
             for (int i = 0; i < 10; i++)
             {
+                //new Thread(Worker.DoJob).Start();
                 new Thread(Worker.DoJobSafeBasic).Start();
             }
         }

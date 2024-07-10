@@ -5,13 +5,13 @@ namespace M7_Tasks
     {
         static void Main(string[] args)
         {
-            //SimpleTask();
+            SimpleTask();
             //ContinueTask();
             //CancelTask();
             // ExceptionTask();
             //AwaiterTask();
             //AwaitTask();
-            AwaitExceptionTask();
+            //AwaitExceptionTask();
             //LegacyTasks();
             Console.WriteLine("End Program");
             Console.ReadLine();

@@ -1,4 +1,5 @@
 ﻿using System.Diagnostics;
+using System.Numerics;
 
 class Program
 {
@@ -12,6 +13,26 @@ class Program
     static object mylock = new object();
 
     static void Main()
+    {
+        Simple();
+        //ComPlex();
+        
+        Console.ReadLine();
+    }
+
+    private static void Simple()
+    {
+        for(int i = 0; i < 4; i++)
+        {
+            Task.Run(() =>
+            {
+                Task.Delay(2000).Wait();
+                int z = 10 * 42;
+                Console.WriteLine(z);
+            });
+        }
+    }
+    private static void ComPlex()
     {
         pcount = Environment.ProcessorCount;
         Console.WriteLine("Proc count = " + pcount);
@@ -31,9 +52,8 @@ class Program
         Console.WriteLine("Starting t4 " + t4.Id.ToString());
         t4.Start();
 
-        Console.ReadLine();
     }
-
+    
     static void TaskA(object? o)
     {
         TaskB(o);
