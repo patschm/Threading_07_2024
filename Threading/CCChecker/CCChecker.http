@@ -1,0 +1,6 @@
+@CCChecker_HostAddress = http://localhost:5027
+
+GET {{CCChecker_HostAddress}}/weatherforecast/
+Accept: application/json
+
+###
