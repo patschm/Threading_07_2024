@@ -23,17 +23,29 @@ namespace Calculator
             _worker = new BackgroundWorker { WorkerReportsProgress = true };
         }
 
-        private void btbPlus_Click(object sender, EventArgs e)
+        private async void btbPlus_Click(object sender, EventArgs e)
         {
             if (int.TryParse(txtA.Text, out int a) && int.TryParse(txtB.Text, out int b))
             {
-                Func<int, int, int> fn = LongAdd;
+                //int result = await LongAddAsync(a, b);
+                //UpdateAnswer(result);
+                var t1 = DoeIets(a, b);//.ConfigureAwait(false);
+                int result = t1.Result;
+                UpdateAnswer(result);
 
-                fn.BeginInvoke(a, b, ar => { 
-                    var fsub = ar.AsyncState as Func<int, int, int>;    
-                    int result = fsub.EndInvoke(ar);
-                    _main.Send(UpdateAnswer, result);
-                }, fn);
+                //Task.Run(() => LongAdd(a, b))
+                //    .ContinueWith(pt => _main.Post(UpdateAnswer, pt.Result));
+
+                //Task.Run(() => LongAdd(a, b))
+                //    .ContinueWith(pt => _main.Post(UpdateAnswer, pt.Result + 1));
+
+                //Func<int, int, int> fn = LongAdd;
+
+                //fn.BeginInvoke(a, b, ar => { 
+                //    var fsub = ar.AsyncState as Func<int, int, int>;    
+                //    int result = fsub.EndInvoke(ar);
+                //    _main.Send(UpdateAnswer, result);
+                //}, fn);
 
                 //_worker.DoWork += (o, arg) =>
                 //{
@@ -73,6 +85,11 @@ namespace Calculator
             }
         }
 
+        private  Task<int> DoeIets(int a, int b)
+        {
+            return  LongAddAsync(a, b);
+        }
+
         private void UpdateAnswer(object result)
         {
             lblAnswer.Text = result.ToString();
@@ -92,6 +109,9 @@ namespace Calculator
             }
             return a + b;
         }
-
+        private Task<int> LongAddAsync(int a, int b)
+        {
+            return Task.Run(() => LongAdd(a, b));
+        }
     }
 }

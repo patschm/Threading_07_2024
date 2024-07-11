@@ -10,8 +10,8 @@ namespace M8_PLINQ
 
         static void Main(string[] args)
         {
-            CheckCCSync();
-            //CheckCCParallel();
+            //CheckCCSync();
+            CheckCCParallel();
             //CheckCCCancel();
             //TestMerge();
             Console.ReadLine();

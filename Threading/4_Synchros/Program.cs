@@ -14,7 +14,7 @@ namespace M4_Collections
         {
             //Problem_1();
             //Solution_1();
-            //Blocking_Collection();
+            Blocking_Collection();
             //Concurrent_Bag();
             //Concurrent_Stack();
             // Exercise 3b & 3c
@@ -84,8 +84,8 @@ namespace M4_Collections
         {
             var rnd = new Random();
             
-            var list = new BlockingCollection<int>(5);
-            //var list = new BlockingCollection<int>(new ConcurrentStack<int>(), 5);
+            //var list = new BlockingCollection<int>(5);
+            var list = new BlockingCollection<int>(new ConcurrentStack<int>(), 5);
             //var list = new BlockingCollection<int>(new ConcurrentBag<int>(), 5);
             for (int j = 0; j < 1; j++)
             {
@@ -135,7 +135,7 @@ namespace M4_Collections
                     {
                         list.TryPeek(out int nr);
                         // Decreasing this value increase the chance of "stealing" a value
-                        Thread.Sleep(100);
+                        //Thread.Sleep(1);
                         list.Add(++nr);
                     }
                     cde.Signal();
@@ -198,9 +198,6 @@ namespace M4_Collections
                 if (total != 5050)
                     Console.WriteLine($"Sum: {total}");
             }
-        }
-
-       
-       
+        }     
     }
 }

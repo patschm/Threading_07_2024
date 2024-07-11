@@ -1,4 +1,6 @@
-﻿namespace M4b_AsyncResult;
+﻿using System.Diagnostics;
+
+namespace M4b_AsyncResult;
 
 internal class Program
 {
@@ -12,10 +14,14 @@ internal class Program
 
     private static void Yielding()
     {
-        foreach (int nr in Numbers())
+        Stopwatch watch = new Stopwatch();
+        watch.Start();
+        foreach (int nr in  Numbers())
         {
-            Console.WriteLine(nr);
+           Console.WriteLine(nr);
         }
+        watch.Stop();
+        Console.WriteLine(watch.Elapsed );
     }
     private static async Task YieldingAsync()
     {
@@ -26,6 +32,14 @@ internal class Program
     }
     private static IEnumerable<int> Numbers()
     {
+        //[] buffer = new int[1_000_000_000];
+        //for(int i =0; i <1_000_000_000;  i++)
+        //{
+        //    yield return i;
+        //    //buffer[i] = i;
+        //}
+        ////return buffer;
+        ////int[] ints = new int[3];
         Console.WriteLine("Next 1");
         yield return 1;
         Console.WriteLine("Next 2");

@@ -12,19 +12,21 @@ namespace M5_Storage
             //ValuePerThread2();
             //ValuePerThread3();
             //ValuePerThread4Async();
-            //LazyInit();
+            LazyInit();
             Console.ReadLine();
         }
 
 
         // Every thread gets it's own dedicated version of this variable
-        //[ThreadStatic]
+        [ThreadStatic]
         static int counter = 0;
         private static void ValuePerThread()
         {
             Barrier bar = new Barrier(10);
 
-            Parallel.For(0, 10, idx =>
+            var options = new ParallelOptions { MaxDegreeOfParallelism = 14 };
+
+            Parallel.For(0, 10, options, idx =>
             {
                 for (int i = 0; i < 10; i++)
                 {
@@ -44,14 +46,18 @@ namespace M5_Storage
 
             Parallel.For(0, 10, idx =>
             {
+                //int local = 0;
                 for (int i = 0; i < 10; i++)
                 {
-                    bar.SignalAndWait();
+                    //bar.SignalAndWait();
                     local.Value++;
                     //local++;
                 }
+                Console.WriteLine($"ID: {Thread.CurrentThread.ManagedThreadId}");
                 Console.WriteLine(local);
             });
+            Console.WriteLine("========");
+            //Console.WriteLine(local.Values);
         }
         private static void ValuePerThread3()
         {
@@ -103,7 +109,7 @@ namespace M5_Storage
             {
                 bar.SignalAndWait();
                 heavy = new HeavyLoad();
-                //heavyLoad = new Lazy<HeavyLoad>(() => new HeavyLoad(), true);
+                heavyLoad = new Lazy<HeavyLoad>(() => new HeavyLoad(), true);
             });
             Console.WriteLine($"Normal: {heavy?.Counter}");
             Console.WriteLine($"Lazy: {heavyLoad?.Value?.Counter}");

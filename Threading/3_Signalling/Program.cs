@@ -10,12 +10,12 @@ namespace M3_Signalling
 
         static void Main(string[] args)
         {
-            BasicSignalling();
+            //BasicSignalling();
             //CountDownApproval();
             // Exercise 2
 
             //BarrierSprint();
-            //SemaphoreGarage();
+            SemaphoreGarage();
             //ReadersAndWriters();
 
             // Exercise 3a
@@ -53,6 +53,7 @@ namespace M3_Signalling
             var rnd = new Random();
             var rwl = new ReaderWriterLock();
 
+            //ThreadPool.SetMinThreads(10, 10);
             for(var i = 0; i < 10; i++)
             {
                 ThreadPool.QueueUserWorkItem(Reader, i);
@@ -63,6 +64,7 @@ namespace M3_Signalling
                 for (var j = 0; j < 30; j++)
                 {
                     var useTime = rnd.Next(1000, 5000);
+                    Console.WriteLine($"Client {nr} staat voor de reader lock");
                     rwl.AcquireReaderLock(Timeout.Infinite);
                     Console.WriteLine($"Client {nr} is reading...");
                     Thread.Sleep(useTime);
@@ -78,6 +80,7 @@ namespace M3_Signalling
                     }
                     Console.WriteLine($"Client {nr} finished reading");
                     rwl.ReleaseReaderLock();
+                    Console.WriteLine($"Client {nr} releast de reader lock");
                 }
             }
             void Writer(object nr)
@@ -98,6 +101,7 @@ namespace M3_Signalling
             var rnd = new Random();
             Semaphore trafficLight = new Semaphore(25, 25);
 
+            ThreadPool.SetMinThreads(100, 100);
             var max = 0;
             for (var i = 0; i < 100; i++) 
             {
@@ -129,8 +133,10 @@ namespace M3_Signalling
                 var delay = rnd.Next(1000, 10000);
                 Thread.Sleep(20000 + delay);
                 Console.WriteLine($"Car {nr} driving out...");
-                trafficLight.Release();
-                lock(locker) max--;
+                int semnr = trafficLight.Release();
+                Console.WriteLine($"Sem Nr {semnr}, {max}");
+                Interlocked.Decrement(ref max);
+                //lock(locker) max--;
             }
         }
 

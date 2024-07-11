@@ -14,8 +14,8 @@ class Program
 
     static void Main()
     {
-        Simple();
-        //ComPlex();
+        //Simple();
+        ComPlex();
         
         Console.ReadLine();
     }
